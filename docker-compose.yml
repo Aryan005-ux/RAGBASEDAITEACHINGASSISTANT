@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  # FastAPI Serving App (Scalable to multiple instances)
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - MODEL_BACKEND=auto  # ollama (bge-m3) if reachable, else keyword search; 'mock' for pure load tests
+      - OLLAMA_URL=http://host.docker.internal:11434
+      - WHISPER_MODEL=small
+    volumes:
+      - course_data:/app/data                         # uploaded videos + transcripts
+      - whisper_cache:/home/appuser/.cache/huggingface  # downloaded Whisper model
+      - MODEL_NAME=BAAI/bge-m3
+      - INDEX_PATH=embeddings.joblib
+      - SLA_LATENCY_MS=300.0
+      - AWS_LAMBDA_MEM_MB=2048
+      - AWS_LAMBDA_COST_PER_MS=0.0000000267
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+    # Note: We do not expose uvicorn directly to the host, uvicorn goes through the Nginx Load Balancer
+
+  # Nginx Load Balancer to route requests round-robin
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_load_balancer
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api
+    restart: always
+
+  # Locust Load Generator (for SLA Verification)
+  locust:
+    image: locustio/locust
+    container_name: locust_load_generator
+    ports:
+      - "8089:8089"
+    volumes:
+      - ./locustfile.py:/mnt/locust/locustfile.py
+    command: -f /mnt/locust/locustfile.py
+    depends_on:
+      - nginx
+
+volumes:
+  course_data:
+  whisper_cache:

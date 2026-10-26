@@ -1,0 +1,10 @@
+[theme]
+primaryColor = "#5b4cf0"
+
+[server]
+# Streamlit Community Cloud keeps uploads in memory while they arrive, so keep this modest
+maxUploadSize = 200
+headless = true
+
+[browser]
+gatherUsageStats = false

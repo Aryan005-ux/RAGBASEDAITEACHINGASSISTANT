@@ -1,0 +1,12 @@
+# Local environment
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+.claude/
+
+# User data: uploaded videos, transcripts, accounts database
+data/
+
+# Generated model exports
+model_onnx/

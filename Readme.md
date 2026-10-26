@@ -69,6 +69,6 @@ With Docker: `docker compose up --build`, then open http://localhost:8080.
 
 Limits to know on Community Cloud:
 - **Storage is temporary.** Accounts, uploaded videos and transcripts are kept on the app's local disk, which is wiped whenever the app restarts, redeploys, or wakes up after sleeping. The Sigma demo course is always available because it ships with the repo. For permanent storage, move `data/` to a database and object storage (e.g. Postgres + S3) or host on a server with a disk.
-- **Small machine.** Transcription uses Whisper `base` by default here (set `WHISPER_MODEL` in the app's secrets to change it) and runs on a shared CPU, so long videos take a while. Uploads are limited to 200 MB each (`.streamlit/config.toml`).
+- **Small machine.** Transcription uses Whisper `base` by default here (set `WHISPER_MODEL` in the app's secrets to change it) and runs on a shared CPU, so long videos take a while. Uploads are limited to 1 GB each (`maxUploadSize` in `.streamlit/config.toml`); for long lectures, uploading just the audio (MP3/M4A) is much smaller and transcribes the same.
 - **No Ollama.** Answers come straight from the matching transcript passages, using keyword search.
 - **Logins last for the browser tab.** Refreshing the page logs you out.

@@ -2,7 +2,7 @@
 
 Ask a question about a video course and get **the exact lecture video and timestamp** that answers it, then play the video from that moment. Anyone can create an account, upload their own lecture videos, and the system transcribes and indexes them automatically.
 
-**Live demo:** _add your Streamlit app link here_ · Built with Python, Whisper, bge-m3, scikit-learn, FastAPI and Streamlit
+**Live demo:** [ragbasedaiteachingassistant.streamlit.app](https://ragbasedaiteachingassistant-bjuax8qmlftfmx3bbmyumt.streamlit.app) · Built with Python, Whisper, bge-m3, scikit-learn, FastAPI and Streamlit
 
 ---
 

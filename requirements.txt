@@ -8,4 +8,6 @@ scipy>=1.7.0
 requests>=2.25.0
 python-multipart>=0.0.9
 faster-whisper>=1.0.0
+# faster-whisper 1.2.1 calls av.open(..., metadata_errors=...), which PyAV 19 removed
+av>=11,<19
 streamlit>=1.48.0
